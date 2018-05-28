@@ -122,6 +122,14 @@ impl<T: Real> Vector3<T> {
             z: self.z.max(other.z),
         }
     }
+
+    pub fn permute(self, x: usize, y: usize, z: usize) -> Self {
+        Vector3{
+            x: self[x],
+            y: self[y],
+            z: self[z],
+        }
+    }
 }
 
 impl<T: Real> Index<usize> for Vector3<T> {
@@ -397,6 +405,17 @@ mod tests {
         assert_eq!(3.0, min.x);
         assert_eq!(2.0, min.y);
         assert_eq!(3.0, min.z);
+    }
+
+    #[test]
+    fn permute() {
+        let v = Vector3::new(1.0, 2.0, 3.0);
+
+        let permuted = v.permute(2, 0, 1);
+
+        assert_eq!(3.0, permuted.x);
+        assert_eq!(1.0, permuted.y);
+        assert_eq!(2.0, permuted.z);
     }
 
     #[test]
