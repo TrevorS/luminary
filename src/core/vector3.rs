@@ -31,8 +31,8 @@ impl<T: Real> Vector3<T> {
         v
     }
 
-    fn has_nans(&self) -> bool {
-        &self.x != &self.x || &self.y != &self.y || &self.z != &self.z
+    fn has_nans(self) -> bool {
+        self.x != self.x || self.y != self.y || self.z != self.z
     }
 
     pub fn abs(self) -> Self {
@@ -130,6 +130,20 @@ impl<T: Real> Vector3<T> {
             z: self[z],
         }
     }
+
+    pub fn coordinate_system(self) -> (Self, Self) {
+        let v2 = if self.x.abs() > self.y.abs() {
+            Vector3{x: -self.z, y: T::zero(), z: self.x} /
+                (self.x * self.x + self.z * self.z).sqrt()
+        } else {
+            Vector3{x: T::zero(), y: self.z, z: -self.y} /
+                (self.y * self.y + self.z * self.z).sqrt()
+        };
+
+        let v3 = self.cross(v2);
+
+        (v2, v3)
+    }
 }
 
 impl<T: Real> Index<usize> for Vector3<T> {
@@ -222,8 +236,7 @@ impl<T: Real> Div<T> for Vector3<T> {
     type Output = Self;
 
     fn div(self, other: T) -> Self {
-        let one: T = NumCast::from(1usize).unwrap();
-        let inv = one / other;
+        let inv = T::one() / other;
 
         Vector3{
             x: self.x * inv,
@@ -235,8 +248,7 @@ impl<T: Real> Div<T> for Vector3<T> {
 
 impl<T: Real + MulAssign> DivAssign<T> for Vector3<T> {
     fn div_assign(&mut self, other: T) {
-        let one: T = NumCast::from(1usize).unwrap();
-        let inv = one / other;
+        let inv = T::one() / other;
 
         self.x *= inv;
         self.y *= inv;
@@ -248,7 +260,7 @@ impl<T: Real> Neg for Vector3<T> {
     type Output = Self;
 
     fn neg(self) -> Self {
-        let neg_one: T = NumCast::from(-1isize).unwrap();
+        let neg_one = T::one().neg();
 
         Vector3{
             x: neg_one * self.x,
