@@ -12,7 +12,7 @@ use std::ops::{
     Neg,
 };
 
-use num::traits::{NumAssign, NumCast};
+use num::traits::NumCast;
 use num::traits::real::Real;
 
 #[derive(Clone, Copy, Debug)]
@@ -184,7 +184,7 @@ impl<T: Real> Add for Vector3<T> {
     }
 }
 
-impl<T: Real + NumAssign> AddAssign for Vector3<T> {
+impl<T: Real + AddAssign> AddAssign for Vector3<T> {
     fn add_assign(&mut self, other: Self) {
         self.x += other.x;
         self.y += other.y;
