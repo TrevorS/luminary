@@ -35,7 +35,7 @@ impl<T: Real> Vector3<T> {
         &self.x != &self.x || &self.y != &self.y || &self.z != &self.z
     }
 
-    fn abs(self) -> Self {
+    pub fn abs(self) -> Self {
         Vector3{
             x: self.x.abs(),
             y: self.y.abs(),
@@ -43,15 +43,15 @@ impl<T: Real> Vector3<T> {
         }
     }
 
-    fn dot(self, other: Self) -> T {
+    pub fn dot(self, other: Self) -> T {
         self.x * other.x + self.y * other.y + self.z * other.z
     }
 
-    fn abs_dot(self, other: Self) -> T {
+    pub fn abs_dot(self, other: Self) -> T {
         self.dot(other).abs()
     }
 
-    fn cross(self, other: Self) -> Self {
+    pub fn cross(self, other: Self) -> Self {
         let v1x = self.x.to_f64().unwrap();
         let v1y = self.y.to_f64().unwrap();
         let v1z = self.z.to_f64().unwrap();
@@ -71,27 +71,27 @@ impl<T: Real> Vector3<T> {
         }
     }
 
-    fn length_squared(self) -> T {
+    pub fn length_squared(self) -> T {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
 
-    fn length(self) -> T {
+    pub fn length(self) -> T {
         self.length_squared().sqrt()
     }
 
-    fn normalize(self) -> Self {
+    pub fn normalize(self) -> Self {
         self / self.length()
     }
 
-    fn min_component(self) -> T {
+    pub fn min_component(self) -> T {
         self.x.min(self.y.min(self.z))
     }
 
-    fn max_component(self) -> T {
+    pub fn max_component(self) -> T {
         self.x.max(self.y.max(self.z))
     }
 
-    fn max_dimension(self) -> usize {
+    pub fn max_dimension(self) -> usize {
         if self.x > self.y {
             if self.x > self.z {
                 0
@@ -107,7 +107,7 @@ impl<T: Real> Vector3<T> {
         }
     }
 
-    fn min(self, other: Self) -> Self {
+    pub fn min(self, other: Self) -> Self {
         Vector3{
             x: self.x.min(other.x),
             y: self.y.min(other.y),
@@ -115,7 +115,7 @@ impl<T: Real> Vector3<T> {
         }
     }
 
-    fn max(self, other: Self) -> Self {
+    pub fn max(self, other: Self) -> Self {
         Vector3{
             x: self.x.max(other.x),
             y: self.y.max(other.y),
