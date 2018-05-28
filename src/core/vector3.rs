@@ -1,5 +1,3 @@
-use std::cmp;
-
 use std::ops::{
     IndexMut,
     Index,
@@ -83,6 +81,14 @@ impl<T: Real> Vector3<T> {
 
     fn normalize(self) -> Self {
         self / self.length()
+    }
+
+    fn min_component(self) -> T {
+        self.x.min(self.y.min(self.z))
+    }
+
+    fn max_component(self) -> T {
+        self.x.max(self.y.max(self.z))
     }
 }
 
@@ -308,6 +314,24 @@ mod tests {
         assert_eq!(0.8017837257372732, normalized.x);
         assert_eq!(0.2672612419124244, normalized.y);
         assert_eq!(0.5345224838248488, normalized.z);
+    }
+
+    #[test]
+    fn min_component() {
+        let v = Vector3::new(1.0, 2.0, 3.0);
+
+        let min_component = v.min_component();
+
+        assert_eq!(1.0, min_component);
+    }
+
+    #[test]
+    fn max_component() {
+        let v = Vector3::new(1.0, 2.0, 3.0);
+
+        let max_component = v.max_component();
+
+        assert_eq!(3.0, max_component);
     }
 
     #[test]
