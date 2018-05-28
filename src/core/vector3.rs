@@ -90,6 +90,38 @@ impl<T: Real> Vector3<T> {
     fn max_component(self) -> T {
         self.x.max(self.y.max(self.z))
     }
+
+    fn max_dimension(self) -> usize {
+        if self.x > self.y {
+            if self.x > self.z {
+                0
+            } else {
+                2
+            }
+        } else {
+            if self.y > self.z {
+                1
+            } else {
+                2
+            }
+        }
+    }
+
+    fn min(self, other: Self) -> Self {
+        Vector3{
+            x: self.x.min(other.x),
+            y: self.y.min(other.y),
+            z: self.z.min(other.z),
+        }
+    }
+
+    fn max(self, other: Self) -> Self {
+        Vector3{
+            x: self.x.max(other.x),
+            y: self.y.max(other.y),
+            z: self.z.max(other.z),
+        }
+    }
 }
 
 impl<T: Real> Index<usize> for Vector3<T> {
@@ -332,6 +364,39 @@ mod tests {
         let max_component = v.max_component();
 
         assert_eq!(3.0, max_component);
+    }
+
+    #[test]
+    fn max_dimension() {
+        let v = Vector3::new(1.0, 2.0, 3.0);
+
+        let max_dimension = v.max_dimension();
+
+        assert_eq!(2, max_dimension);
+    }
+
+    #[test]
+    fn min() {
+        let v1 = Vector3::new(1.0, 2.0, 3.0);
+        let v2 = Vector3::new(3.0, 2.0, 1.0);
+
+        let min = v1.min(v2);
+
+        assert_eq!(1.0, min.x);
+        assert_eq!(2.0, min.y);
+        assert_eq!(1.0, min.z);
+    }
+
+    #[test]
+    fn max() {
+        let v1 = Vector3::new(1.0, 2.0, 3.0);
+        let v2 = Vector3::new(3.0, 2.0, 1.0);
+
+        let min = v1.max(v2);
+
+        assert_eq!(3.0, min.x);
+        assert_eq!(2.0, min.y);
+        assert_eq!(3.0, min.z);
     }
 
     #[test]
