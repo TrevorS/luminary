@@ -12,17 +12,18 @@ use std::ops::{
     Neg,
 };
 
-use num::traits::NumCast;
-use num::traits::real::Real;
+use num::NumCast;
+
+use core::value::Value;
 
 #[derive(Clone, Copy, Debug)]
-pub struct Vector3<T: Real> {
+pub struct Vector3<T: Value> {
     pub x: T,
     pub y: T,
     pub z: T,
 }
 
-impl<T: Real> Vector3<T> {
+impl<T: Value> Vector3<T> {
     pub fn new(x: T, y: T, z: T) -> Self {
         let v = Vector3 { x: x, y: y, z: z };
 
@@ -146,7 +147,7 @@ impl<T: Real> Vector3<T> {
     }
 }
 
-impl<T: Real> Index<usize> for Vector3<T> {
+impl<T: Value> Index<usize> for Vector3<T> {
     type Output = T;
 
     fn index(&self, i: usize) -> &T {
@@ -160,7 +161,7 @@ impl<T: Real> Index<usize> for Vector3<T> {
     }
 }
 
-impl<T: Real> IndexMut<usize> for Vector3<T> {
+impl<T: Value> IndexMut<usize> for Vector3<T> {
     fn index_mut(&mut self, i: usize) -> &mut T {
         assert!(i <= 2);
 
@@ -172,7 +173,7 @@ impl<T: Real> IndexMut<usize> for Vector3<T> {
     }
 }
 
-impl<T: Real> Add for Vector3<T> {
+impl<T: Value> Add for Vector3<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
@@ -184,7 +185,7 @@ impl<T: Real> Add for Vector3<T> {
     }
 }
 
-impl<T: Real + AddAssign> AddAssign for Vector3<T> {
+impl<T: Value + AddAssign> AddAssign for Vector3<T> {
     fn add_assign(&mut self, other: Self) {
         self.x += other.x;
         self.y += other.y;
@@ -192,7 +193,7 @@ impl<T: Real + AddAssign> AddAssign for Vector3<T> {
     }
 }
 
-impl<T: Real> Sub for Vector3<T> {
+impl<T: Value> Sub for Vector3<T> {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
@@ -204,7 +205,7 @@ impl<T: Real> Sub for Vector3<T> {
     }
 }
 
-impl<T: Real + SubAssign> SubAssign for Vector3<T> {
+impl<T: Value + SubAssign> SubAssign for Vector3<T> {
     fn sub_assign(&mut self, other: Self) {
         self.x -= other.x;
         self.y -= other.y;
@@ -212,7 +213,7 @@ impl<T: Real + SubAssign> SubAssign for Vector3<T> {
     }
 }
 
-impl<T: Real> Mul<T> for Vector3<T> {
+impl<T: Value> Mul<T> for Vector3<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
@@ -224,7 +225,7 @@ impl<T: Real> Mul<T> for Vector3<T> {
     }
 }
 
-impl<T: Real + MulAssign> MulAssign<T> for Vector3<T> {
+impl<T: Value + MulAssign> MulAssign<T> for Vector3<T> {
     fn mul_assign(&mut self, other: T) {
         self.x *= other;
         self.y *= other;
@@ -232,7 +233,7 @@ impl<T: Real + MulAssign> MulAssign<T> for Vector3<T> {
     }
 }
 
-impl<T: Real> Div<T> for Vector3<T> {
+impl<T: Value> Div<T> for Vector3<T> {
     type Output = Self;
 
     fn div(self, other: T) -> Self {
@@ -246,7 +247,7 @@ impl<T: Real> Div<T> for Vector3<T> {
     }
 }
 
-impl<T: Real + MulAssign> DivAssign<T> for Vector3<T> {
+impl<T: Value + MulAssign> DivAssign<T> for Vector3<T> {
     fn div_assign(&mut self, other: T) {
         let inv = T::one() / other;
 
@@ -256,7 +257,7 @@ impl<T: Real + MulAssign> DivAssign<T> for Vector3<T> {
     }
 }
 
-impl<T: Real> Neg for Vector3<T> {
+impl<T: Value> Neg for Vector3<T> {
     type Output = Self;
 
     fn neg(self) -> Self {
