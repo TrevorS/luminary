@@ -12,15 +12,18 @@ use std::ops::{
     Neg,
 };
 
-use num::traits::real::Real;
+use num::traits::sign::Signed;
+use num::traits::{ToPrimitive, FromPrimitive};
+
+use core::{min, max, sqrt};
 
 #[derive(Clone, Copy, Debug)]
-pub struct Vector2<T: Real> {
+pub struct Vector2<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> {
     pub x: T,
     pub y: T,
 }
 
-impl<T: Real> Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Vector2<T> {
     pub fn new(x: T, y: T) -> Self {
         let v = Vector2 { x: x, y: y };
 
@@ -53,7 +56,7 @@ impl<T: Real> Vector2<T> {
     }
 
     pub fn length(self) -> T {
-        self.length_squared().sqrt()
+        sqrt(self.length_squared())
     }
 
     pub fn normalize(self) -> Self {
@@ -61,11 +64,11 @@ impl<T: Real> Vector2<T> {
     }
 
     pub fn min_component(self) -> T {
-        self.x.min(self.y)
+        min(self.x, self.y)
     }
 
     pub fn max_component(self) -> T {
-        self.x.max(self.y)
+        max(self.x, self.y)
     }
 
     pub fn max_dimension(self) -> usize {
@@ -78,15 +81,15 @@ impl<T: Real> Vector2<T> {
 
     pub fn min(self, other: Self) -> Self {
         Vector2{
-            x: self.x.min(other.x),
-            y: self.y.min(other.y),
+            x: min(self.x, other.x),
+            y: min(self.y, other.y),
         }
     }
 
     pub fn max(self, other: Self) -> Self {
         Vector2{
-            x: self.x.max(other.x),
-            y: self.y.max(other.y),
+            x: max(self.x, other.x),
+            y: max(self.y, other.y),
         }
     }
 
@@ -98,7 +101,7 @@ impl<T: Real> Vector2<T> {
     }
 }
 
-impl<T: Real> Index<usize> for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Index<usize> for Vector2<T> {
     type Output = T;
 
     fn index(&self, i: usize) -> &T {
@@ -111,7 +114,7 @@ impl<T: Real> Index<usize> for Vector2<T> {
     }
 }
 
-impl<T: Real> IndexMut<usize> for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> IndexMut<usize> for Vector2<T> {
     fn index_mut(&mut self, i: usize) -> &mut T {
         assert!(i <= 1);
 
@@ -122,7 +125,7 @@ impl<T: Real> IndexMut<usize> for Vector2<T> {
     }
 }
 
-impl<T: Real> Add for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Add for Vector2<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
@@ -133,14 +136,14 @@ impl<T: Real> Add for Vector2<T> {
     }
 }
 
-impl<T: Real + AddAssign> AddAssign for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy + AddAssign> AddAssign for Vector2<T> {
     fn add_assign(&mut self, other: Self) {
         self.x += other.x;
         self.y += other.y;
     }
 }
 
-impl<T: Real> Sub for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Sub for Vector2<T> {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
@@ -151,14 +154,14 @@ impl<T: Real> Sub for Vector2<T> {
     }
 }
 
-impl<T: Real + SubAssign> SubAssign for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy + SubAssign> SubAssign for Vector2<T> {
     fn sub_assign(&mut self, other: Self) {
         self.x -= other.x;
         self.y -= other.y;
     }
 }
 
-impl<T: Real> Mul<T> for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Mul<T> for Vector2<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
@@ -169,14 +172,14 @@ impl<T: Real> Mul<T> for Vector2<T> {
     }
 }
 
-impl<T: Real + MulAssign> MulAssign<T> for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy + MulAssign> MulAssign<T> for Vector2<T> {
     fn mul_assign(&mut self, other: T) {
         self.x *= other;
         self.y *= other;
     }
 }
 
-impl<T: Real> Div<T> for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Div<T> for Vector2<T> {
     type Output = Self;
 
     fn div(self, other: T) -> Self {
@@ -189,7 +192,7 @@ impl<T: Real> Div<T> for Vector2<T> {
     }
 }
 
-impl<T: Real + MulAssign> DivAssign<T> for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy + MulAssign> DivAssign<T> for Vector2<T> {
     fn div_assign(&mut self, other: T) {
         let inv = T::one() / other;
 
@@ -198,7 +201,7 @@ impl<T: Real + MulAssign> DivAssign<T> for Vector2<T> {
     }
 }
 
-impl<T: Real> Neg for Vector2<T> {
+impl<T: Signed + ToPrimitive + FromPrimitive + PartialOrd + Copy> Neg for Vector2<T> {
     type Output = Self;
 
     fn neg(self) -> Self {
@@ -222,6 +225,14 @@ mod tests {
 
         assert_eq!(1.0, v.x);
         assert_eq!(2.0, v.y);
+    }
+
+    #[test]
+    fn new_int() {
+        let v = Vector2::new(1, 2);
+
+        assert_eq!(1, v.x);
+        assert_eq!(2, v.y);
     }
 
     #[test]
