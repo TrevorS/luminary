@@ -1,15 +1,15 @@
 use std::ops::{
-    IndexMut,
-    Index,
-    AddAssign,
     Add,
-    Sub,
-    SubAssign,
-    Mul,
-    MulAssign,
+    AddAssign,
     Div,
     DivAssign,
+    Index,
+    IndexMut,
+    Mul,
+    MulAssign,
     Neg,
+    Sub,
+    SubAssign,
 };
 
 use num::NumCast;
