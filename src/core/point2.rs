@@ -1,4 +1,5 @@
 use core::utils::has_nans_2;
+use core::point3::Point3;
 use core::value::Value;
 
 #[derive(Clone, Copy, Debug)]
@@ -12,6 +13,15 @@ impl<T: Value> Point2<T> {
         assert!(!has_nans_2(x, y));
 
         Point2{ x: x, y: y }
+    }
+}
+
+impl<T: Value> From<Point3<T>> for Point2<T> {
+    fn from(p: Point3<T>) -> Self {
+        Point2{
+            x: p.x,
+            y: p.y,
+        }
     }
 }
 
@@ -40,5 +50,15 @@ mod tests {
     #[should_panic]
     fn has_nans_true() {
         Point2::new(1.0, f64::NAN);
+    }
+
+    #[test]
+    fn from_point3() {
+        let p3 = Point3{x: 1.0, y: 2.0, z: 3.0};
+
+        let p2 = Point2::from(p3);
+
+        assert_eq!(1.0, p2.x);
+        assert_eq!(2.0, p2.y);
     }
 }
