@@ -1,6 +1,7 @@
 use core::utils::has_nans_2;
 use core::point3::Point3;
 use core::value::Value;
+use core::vector2::Vector2;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Point2<T: Value> {
@@ -21,6 +22,15 @@ impl<T: Value> From<Point3<T>> for Point2<T> {
         Point2{
             x: p.x,
             y: p.y,
+        }
+    }
+}
+
+impl<T: Value> From<Vector2<T>> for Point2<T> {
+    fn from(v: Vector2<T>) -> Self {
+        Point2{
+            x: v.x,
+            y: v.y,
         }
     }
 }
@@ -55,8 +65,16 @@ mod tests {
     #[test]
     fn from_point3() {
         let p3 = Point3{x: 1.0, y: 2.0, z: 3.0};
-
         let p2 = Point2::from(p3);
+
+        assert_eq!(1.0, p2.x);
+        assert_eq!(2.0, p2.y);
+    }
+
+    #[test]
+    fn from_vector2() {
+        let v2 = Vector2{x: 1.0, y: 2.0};
+        let p2 = Point2::from(v2);
 
         assert_eq!(1.0, p2.x);
         assert_eq!(2.0, p2.y);
