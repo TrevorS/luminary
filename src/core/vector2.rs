@@ -12,6 +12,7 @@ use std::ops::{
     SubAssign,
 };
 
+use core::utils::has_nans_2;
 use core::value::Value;
 
 #[derive(Clone, Copy, Debug)]
@@ -22,15 +23,9 @@ pub struct Vector2<T: Value> {
 
 impl<T: Value> Vector2<T> {
     pub fn new(x: T, y: T) -> Self {
-        let v = Vector2 { x: x, y: y };
+        assert!(!has_nans_2(x, y));
 
-        assert!(!v.has_nans());
-
-        v
-    }
-
-    fn has_nans(self) -> bool {
-        self.x != self.x || self.y != self.y
+        Vector2 { x: x, y: y }
     }
 
     pub fn abs(self) -> Self {
@@ -236,13 +231,6 @@ mod tests {
     #[should_panic]
     fn has_nans_true() {
         Vector2::new(1.0, f64::NAN);
-    }
-
-    #[test]
-    fn has_nans_false() {
-        let v = Vector2::new(1.0, 2.0);
-
-        assert_eq!(false, v.has_nans())
     }
 
     #[test]

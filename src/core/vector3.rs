@@ -14,6 +14,7 @@ use std::ops::{
 
 use num::NumCast;
 
+use core::utils::has_nans_3;
 use core::value::Value;
 
 #[derive(Clone, Copy, Debug)]
@@ -25,15 +26,9 @@ pub struct Vector3<T: Value> {
 
 impl<T: Value> Vector3<T> {
     pub fn new(x: T, y: T, z: T) -> Self {
-        let v = Vector3 { x: x, y: y, z: z };
+        assert!(!has_nans_3(x, y, z));
 
-        assert!(!v.has_nans());
-
-        v
-    }
-
-    fn has_nans(self) -> bool {
-        self.x != self.x || self.y != self.y || self.z != self.z
+        Vector3 { x: x, y: y, z: z }
     }
 
     pub fn abs(self) -> Self {
@@ -289,13 +284,6 @@ mod tests {
     #[should_panic]
     fn has_nans_true() {
         Vector3::new(1.0, 2.0, f64::NAN);
-    }
-
-    #[test]
-    fn has_nans_false() {
-        let v = Vector3::new(1.0, 2.0, 3.0);
-
-        assert_eq!(false, v.has_nans())
     }
 
     #[test]
