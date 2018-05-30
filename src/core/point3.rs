@@ -1,3 +1,8 @@
+use std::ops::{
+    Add,
+    AddAssign,
+};
+
 use core::utils::has_nans_3;
 use core::value::Value;
 use core::vector3::Vector3;
@@ -24,6 +29,26 @@ impl<T: Value> From<Vector3<T>> for Point3<T> {
             y: v.y,
             z: v.z,
         }
+    }
+}
+
+impl<T: Value> Add<Vector3<T>> for Point3<T> {
+    type Output = Self;
+
+    fn add(self, other: Vector3<T>) -> Self {
+        Point3{
+            x: self.x + other.x,
+            y: self.y + other.y,
+            z: self.z + other.z,
+        }
+    }
+}
+
+impl<T: Value + AddAssign> AddAssign<Vector3<T>> for Point3<T> {
+    fn add_assign(&mut self, other: Vector3<T>) {
+        self.x += other.x;
+        self.y += other.y;
+        self.z += other.z;
     }
 }
 
@@ -64,5 +89,27 @@ mod tests {
         assert_eq!(1.0, p3.x);
         assert_eq!(2.0, p3.y);
         assert_eq!(3.0, p3.z);
+    }
+
+    #[test]
+    fn plus() {
+        let p = Point3::new(1.0, 2.0, 3.0);
+        let v = Vector3::new(1.0, 2.0, 3.0);
+
+        let result = p + v;
+
+        assert_eq!(2.0, result.x);
+        assert_eq!(4.0, result.y);
+        assert_eq!(6.0, result.z);
+    }
+
+    #[test]
+    fn plus_assign() {
+        let mut p = Point3::new(1.0, 2.0, 3.0);
+        p += Vector3::new(1.0, 2.0, 3.0);
+
+        assert_eq!(2.0, p.x);
+        assert_eq!(4.0, p.y);
+        assert_eq!(6.0, p.z);
     }
 }
