@@ -15,6 +15,7 @@ use std::ops::{
 use num::NumCast;
 
 use core::utils::has_nans_3;
+use core::normal3::Normal3;
 use core::value::Value;
 
 #[derive(Clone, Copy, Debug)]
@@ -139,6 +140,16 @@ impl<T: Value> Vector3<T> {
         let v3 = self.cross(v2);
 
         (v2, v3)
+    }
+}
+
+impl<T: Value> From<Normal3<T>> for Vector3<T> {
+    fn from(v: Normal3<T>) -> Self {
+        Vector3{
+            x: v.x,
+            y: v.y,
+            z: v.z,
+        }
     }
 }
 
@@ -417,6 +428,16 @@ mod tests {
         assert_eq!(3.0, permuted.x);
         assert_eq!(1.0, permuted.y);
         assert_eq!(2.0, permuted.z);
+    }
+
+    #[test]
+    fn from_normal3() {
+        let n3 = Normal3{x: 1.0, y: 2.0, z: 3.0};
+        let v3 = Vector3::from(n3);
+
+        assert_eq!(1.0, v3.x);
+        assert_eq!(2.0, v3.y);
+        assert_eq!(3.0, v3.z);
     }
 
     #[test]
