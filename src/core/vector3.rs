@@ -494,12 +494,12 @@ mod tests {
 
     #[test]
     fn mul_assign() {
-        let mut v1 = Vector3::new(1.0, 2.0, 3.0);
-        v1 *= 2.0;
+        let mut v = Vector3::new(1.0, 2.0, 3.0);
+        v *= 2.0;
 
-        assert_eq!(2.0, v1.x);
-        assert_eq!(4.0, v1.y);
-        assert_eq!(6.0, v1.z);
+        assert_eq!(2.0, v.x);
+        assert_eq!(4.0, v.y);
+        assert_eq!(6.0, v.z);
     }
 
     #[test]

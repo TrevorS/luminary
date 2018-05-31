@@ -3,6 +3,8 @@ use std::ops::{
     AddAssign,
     Sub,
     SubAssign,
+    Mul,
+    MulAssign,
 };
 
 use core::utils::has_nans_3;
@@ -38,6 +40,18 @@ impl<T: Value> From<Vector3<T>> for Point3<T> {
             x: v.x,
             y: v.y,
             z: v.z,
+        }
+    }
+}
+
+impl<T: Value> Add for Point3<T> {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Point3{
+            x: self.x + other.x,
+            y: self.y + other.y,
+            z: self.z + other.z,
         }
     }
 }
@@ -91,6 +105,26 @@ impl<T: Value + SubAssign> SubAssign<Vector3<T>> for Point3<T> {
         self.x -= other.x;
         self.y -= other.y;
         self.z -= other.z;
+    }
+}
+
+impl<T: Value> Mul<T> for Point3<T> {
+    type Output = Self;
+
+    fn mul(self, other: T) -> Self {
+        Point3{
+            x: self.x * other,
+            y: self.y * other,
+            z: self.z * other,
+        }
+    }
+}
+
+impl<T: Value + MulAssign> MulAssign<T> for Point3<T> {
+    fn mul_assign(&mut self, other: T) {
+        self.x *= other;
+        self.y *= other;
+        self.z *= other;
     }
 }
 
@@ -155,6 +189,18 @@ mod tests {
 
     #[test]
     fn add() {
+        let p1 = Point3::new(1.0, 2.0, 3.0);
+        let p2 = Point3::new(1.0, 2.0, 3.0);
+
+        let result = p1 + p2;
+
+        assert_eq!(2.0, result.x);
+        assert_eq!(4.0, result.y);
+        assert_eq!(6.0, result.z);
+    }
+
+    #[test]
+    fn add_vector() {
         let p = Point3::new(1.0, 2.0, 3.0);
         let v = Vector3::new(1.0, 2.0, 3.0);
 
@@ -176,7 +222,7 @@ mod tests {
     }
 
     #[test]
-    fn sub_point() {
+    fn sub() {
         let p1 = Point3::new(1.0, 2.0, 3.0);
         let p2 = Point3::new(1.0, 2.0, 3.0);
 
@@ -207,5 +253,25 @@ mod tests {
         assert_eq!(0.0, p.x);
         assert_eq!(0.0, p.y);
         assert_eq!(0.0, p.z);
+    }
+
+    #[test]
+    fn mul() {
+        let p1 = Point3::new(1.0, 2.0, 3.0);
+        let p2 = p1 * 2.0;
+
+        assert_eq!(2.0, p2.x);
+        assert_eq!(4.0, p2.y);
+        assert_eq!(6.0, p2.z);
+    }
+
+    #[test]
+    fn mul_assign() {
+        let mut p = Point3::new(1.0, 2.0, 3.0);
+        p *= 2.0;
+
+        assert_eq!(2.0, p.x);
+        assert_eq!(4.0, p.y);
+        assert_eq!(6.0, p.z);
     }
 }
