@@ -92,7 +92,7 @@ mod tests {
     }
 
     #[test]
-    fn plus() {
+    fn add() {
         let p = Point3::new(1.0, 2.0, 3.0);
         let v = Vector3::new(1.0, 2.0, 3.0);
 
@@ -104,7 +104,7 @@ mod tests {
     }
 
     #[test]
-    fn plus_assign() {
+    fn add_assign() {
         let mut p = Point3::new(1.0, 2.0, 3.0);
         p += Vector3::new(1.0, 2.0, 3.0);
 

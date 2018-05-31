@@ -367,7 +367,7 @@ mod tests {
     }
 
     #[test]
-    fn plus() {
+    fn add() {
         let v1 = Vector2::new(1.0, 2.0);
         let v2 = Vector2::new(1.0, 2.0);
 
@@ -378,7 +378,7 @@ mod tests {
     }
 
     #[test]
-    fn plus_assign() {
+    fn add_assign() {
         let mut v1 = Vector2::new(1.0, 2.0);
         v1 += Vector2::new(1.0, 2.0);
 
