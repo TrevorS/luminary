@@ -27,6 +27,18 @@ pub trait Value: Signed + NumCast + ToPrimitive + FromPrimitive + PartialOrd + P
 
         FromPrimitive::from_f64(result).unwrap()
     }
+
+    fn floor(self) -> Self {
+        let result = self.to_f64().unwrap().floor();
+
+        FromPrimitive::from_f64(result).unwrap()
+    }
+
+    fn ceil(self) -> Self {
+        let result = self.to_f64().unwrap().ceil();
+
+        FromPrimitive::from_f64(result).unwrap()
+    }
 }
 
 impl<T> Value for T where T: Signed + NumCast + ToPrimitive + FromPrimitive + PartialOrd + PartialEq + Copy {}
