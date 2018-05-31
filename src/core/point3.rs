@@ -22,6 +22,14 @@ impl<T: Value> Point3<T> {
 
         Point3{ x: x, y: y, z: z }
     }
+
+    pub fn distance_squared(self, other: Self) -> T {
+        (self - other).length_squared()
+    }
+
+    pub fn distance(self, other: Self) -> T {
+        (self - other).length()
+    }
 }
 
 impl<T: Value> From<Vector3<T>> for Point3<T> {
@@ -93,26 +101,46 @@ mod tests {
 
     #[test]
     fn new() {
-        let v = Point3::new(1.0, 2.0, 3.0);
+        let p = Point3::new(1.0, 2.0, 3.0);
 
-        assert_eq!(1.0, v.x);
-        assert_eq!(2.0, v.y);
-        assert_eq!(3.0, v.z);
+        assert_eq!(1.0, p.x);
+        assert_eq!(2.0, p.y);
+        assert_eq!(3.0, p.z);
     }
 
     #[test]
     fn new_int() {
-        let v = Point3::new(1, 2, 3);
+        let p = Point3::new(1, 2, 3);
 
-        assert_eq!(1, v.x);
-        assert_eq!(2, v.y);
-        assert_eq!(3, v.z);
+        assert_eq!(1, p.x);
+        assert_eq!(2, p.y);
+        assert_eq!(3, p.z);
     }
 
     #[test]
     #[should_panic]
     fn has_nans_true() {
         Point3::new(1.0, 2.0, f64::NAN);
+    }
+
+    #[test]
+    fn distance() {
+        let p1 = Point3::new(2.0, 4.0, 6.0);
+        let p2 = Point3::new(1.0, 2.0, 3.0);
+
+        let distance = p1.distance(p2);
+
+        assert_eq!(3.7416573867739413, distance);
+    }
+
+    #[test]
+    fn distance_squared() {
+        let p1 = Point3::new(2.0, 4.0, 6.0);
+        let p2 = Point3::new(1.0, 2.0, 3.0);
+
+        let distance_squared = p1.distance_squared(p2);
+
+        assert_eq!(14.0, distance_squared);
     }
 
     #[test]
