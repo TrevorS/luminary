@@ -1,6 +1,8 @@
 use std::ops::{
     Add,
     AddAssign,
+    Sub,
+    SubAssign,
 };
 
 use core::utils::has_nans_3;
@@ -49,6 +51,38 @@ impl<T: Value + AddAssign> AddAssign<Vector3<T>> for Point3<T> {
         self.x += other.x;
         self.y += other.y;
         self.z += other.z;
+    }
+}
+
+impl<T: Value> Sub<Self> for Point3<T> {
+    type Output = Vector3<T>;
+
+    fn sub(self, other: Self) -> Vector3<T> {
+        Vector3{
+            x: self.x - other.x,
+            y: self.y - other.y,
+            z: self.z - other.z,
+        }
+    }
+}
+
+impl<T: Value> Sub<Vector3<T>> for Point3<T> {
+    type Output = Self;
+
+    fn sub(self, other: Vector3<T>) -> Self {
+        Point3{
+            x: self.x - other.x,
+            y: self.y - other.y,
+            z: self.z - other.z,
+        }
+    }
+}
+
+impl<T: Value + SubAssign> SubAssign<Vector3<T>> for Point3<T> {
+    fn sub_assign(&mut self, other: Vector3<T>) {
+        self.x -= other.x;
+        self.y -= other.y;
+        self.z -= other.z;
     }
 }
 
@@ -111,5 +145,39 @@ mod tests {
         assert_eq!(2.0, p.x);
         assert_eq!(4.0, p.y);
         assert_eq!(6.0, p.z);
+    }
+
+    #[test]
+    fn sub_point() {
+        let p1 = Point3::new(1.0, 2.0, 3.0);
+        let p2 = Point3::new(1.0, 2.0, 3.0);
+
+        let result = p1 - p2;
+
+        assert_eq!(0.0, result.x);
+        assert_eq!(0.0, result.y);
+        assert_eq!(0.0, result.z);
+    }
+
+    #[test]
+    fn sub_vector() {
+        let p = Point3::new(1.0, 2.0, 3.0);
+        let v = Vector3::new(1.0, 2.0, 3.0);
+
+        let result = p - v;
+
+        assert_eq!(0.0, result.x);
+        assert_eq!(0.0, result.y);
+        assert_eq!(0.0, result.z);
+    }
+
+    #[test]
+    fn sub_assign() {
+        let mut p = Point3::new(1.0, 2.0, 3.0);
+        p -= Vector3::new(1.0, 2.0, 3.0);
+
+        assert_eq!(0.0, p.x);
+        assert_eq!(0.0, p.y);
+        assert_eq!(0.0, p.z);
     }
 }
