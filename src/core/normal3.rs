@@ -27,11 +27,19 @@ impl<T: Value> Normal3<T> {
     pub fn new(x: T, y: T, z: T) -> Self {
         assert!(!has_nans_3(x, y, z));
 
-        Normal3 { x: x, y: y, z: z }
+        Self{ x: x, y: y, z: z }
+    }
+
+    pub fn zero() -> Self {
+        Self::new(
+            T::zero(),
+            T::zero(),
+            T::zero(),
+        )
     }
 
     pub fn abs(self) -> Self {
-        Normal3{
+        Self{
             x: self.x.abs(),
             y: self.y.abs(),
             z: self.z.abs(),
@@ -83,7 +91,7 @@ impl<T: Value> Normal3<T> {
     }
 
     pub fn min(self, other: Self) -> Self {
-        Normal3{
+        Self{
             x: self.x.min(other.x),
             y: self.y.min(other.y),
             z: self.z.min(other.z),
@@ -91,7 +99,7 @@ impl<T: Value> Normal3<T> {
     }
 
     pub fn max(self, other: Self) -> Self {
-        Normal3{
+        Self{
             x: self.x.max(other.x),
             y: self.y.max(other.y),
             z: self.z.max(other.z),
@@ -99,7 +107,7 @@ impl<T: Value> Normal3<T> {
     }
 
     pub fn permute(self, x: usize, y: usize, z: usize) -> Self {
-        Normal3{
+        Self{
             x: self[x],
             y: self[y],
             z: self[z],
@@ -107,7 +115,7 @@ impl<T: Value> Normal3<T> {
     }
 
     pub fn face_forward(self, other: Vector3<T>) -> Self {
-        let dot = self.dot(Normal3::from(other));
+        let dot = self.dot(Self::from(other));
 
         if dot < T::zero() {
             -self
@@ -119,7 +127,7 @@ impl<T: Value> Normal3<T> {
 
 impl<T: Value> From<Vector3<T>> for Normal3<T> {
     fn from(v: Vector3<T>) -> Self {
-        Normal3{
+        Self{
             x: v.x,
             y: v.y,
             z: v.z,
@@ -157,7 +165,7 @@ impl<T: Value> Add for Normal3<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Normal3{
+        Self{
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z,
@@ -177,7 +185,7 @@ impl<T: Value> Sub for Normal3<T> {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Normal3{
+        Self{
             x: self.x - other.x,
             y: self.y - other.y,
             z: self.z - other.z,
@@ -197,7 +205,7 @@ impl<T: Value> Mul<T> for Normal3<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
-        Normal3{
+        Self{
             x: self.x * other,
             y: self.y * other,
             z: self.z * other,
@@ -219,7 +227,7 @@ impl<T: Value> Div<T> for Normal3<T> {
     fn div(self, other: T) -> Self {
         let inv = T::one() / other;
 
-        Normal3{
+        Self{
             x: self.x * inv,
             y: self.y * inv,
             z: self.z * inv,
@@ -243,7 +251,7 @@ impl<T: Value> Neg for Normal3<T> {
     fn neg(self) -> Self {
         let neg_one = T::one().neg();
 
-        Normal3{
+        Self{
             x: neg_one * self.x,
             y: neg_one * self.y,
             z: neg_one * self.z,
@@ -263,6 +271,24 @@ mod tests {
         assert_eq!(1.0, n.x);
         assert_eq!(2.0, n.y);
         assert_eq!(3.0, n.z);
+    }
+
+    #[test]
+    fn new_zero() {
+        let n: Normal3<f64> = Normal3::zero();
+
+        assert_eq!(0.0, n.x);
+        assert_eq!(0.0, n.y);
+        assert_eq!(0.0, n.z);
+    }
+
+    #[test]
+    fn new_zero_int() {
+        let n: Normal3<i32> = Normal3::zero();
+
+        assert_eq!(0, n.x);
+        assert_eq!(0, n.y);
+        assert_eq!(0, n.z);
     }
 
     #[test]
@@ -487,7 +513,7 @@ mod tests {
     }
 
     #[test]
-    fn din() {
+    fn div() {
         let n1 = Normal3::new(2.0, 4.0, 6.0);
         let n2 = n1 / 2.0;
 
@@ -497,7 +523,7 @@ mod tests {
     }
 
     #[test]
-    fn din_assign() {
+    fn div_assign() {
         let mut n1 = Normal3::new(2.0, 4.0, 6.0);
         n1 /= 2.0;
 

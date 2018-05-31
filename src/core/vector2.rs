@@ -25,11 +25,18 @@ impl<T: Value> Vector2<T> {
     pub fn new(x: T, y: T) -> Self {
         assert!(!has_nans_2(x, y));
 
-        Vector2 { x: x, y: y }
+        Self{ x: x, y: y }
+    }
+
+    pub fn zero() -> Self {
+        Self::new(
+            T::zero(),
+            T::zero(),
+        )
     }
 
     pub fn abs(self) -> Self {
-        Vector2{
+        Self{
             x: self.x.abs(),
             y: self.y.abs(),
         }
@@ -72,21 +79,21 @@ impl<T: Value> Vector2<T> {
     }
 
     pub fn min(self, other: Self) -> Self {
-        Vector2{
+        Self{
             x: self.x.min(other.x),
             y: self.y.min(other.y),
         }
     }
 
     pub fn max(self, other: Self) -> Self {
-        Vector2{
+        Self{
             x: self.x.max(other.x),
             y: self.y.max(other.y),
         }
     }
 
     pub fn permute(self, x: usize, y: usize) -> Self {
-        Vector2{
+        Self{
             x: self[x],
             y: self[y],
         }
@@ -121,7 +128,7 @@ impl<T: Value> Add for Vector2<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Vector2{
+        Self{
             x: self.x + other.x,
             y: self.y + other.y,
         }
@@ -139,7 +146,7 @@ impl<T: Value> Sub for Vector2<T> {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Vector2{
+        Self{
             x: self.x - other.x,
             y: self.y - other.y,
         }
@@ -157,7 +164,7 @@ impl<T: Value> Mul<T> for Vector2<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
-        Vector2{
+        Self{
             x: self.x * other,
             y: self.y * other,
         }
@@ -177,7 +184,7 @@ impl<T: Value> Div<T> for Vector2<T> {
     fn div(self, other: T) -> Self {
         let inv = T::one() / other;
 
-        Vector2{
+        Self{
             x: self.x * inv,
             y: self.y * inv,
         }
@@ -199,7 +206,7 @@ impl<T: Value> Neg for Vector2<T> {
     fn neg(self) -> Self {
         let neg_one = T::one().neg();
 
-        Vector2{
+        Self{
             x: neg_one * self.x,
             y: neg_one * self.y,
         }
@@ -225,6 +232,22 @@ mod tests {
 
         assert_eq!(1, v.x);
         assert_eq!(2, v.y);
+    }
+
+    #[test]
+    fn new_zero() {
+        let v: Vector2<f64> = Vector2::zero();
+
+        assert_eq!(0.0, v.x);
+        assert_eq!(0.0, v.y);
+    }
+
+    #[test]
+    fn new_zero_int() {
+        let v: Vector2<i32> = Vector2::zero();
+
+        assert_eq!(0, v.x);
+        assert_eq!(0, v.y);
     }
 
     #[test]

@@ -24,46 +24,53 @@ impl<T: Value> Point2<T> {
     pub fn new(x: T, y: T) -> Self {
         assert!(!has_nans_2(x, y));
 
-        Point2{ x: x, y: y }
+        Self{ x: x, y: y }
+    }
+
+    pub fn zero() -> Self {
+        Self::new(
+            T::zero(),
+            T::zero(),
+        )
     }
 
     pub fn min(self, other: Self) -> Self {
-        Point2{
+        Self{
             x: self.x.min(other.x),
             y: self.y.min(other.y),
         }
     }
 
     pub fn max(self, other: Self) -> Self {
-        Point2{
+        Self{
             x: self.x.max(other.x),
             y: self.y.max(other.y),
         }
     }
 
     pub fn floor(self) -> Self {
-        Point2{
+        Self{
             x: self.x.floor(),
             y: self.y.floor(),
         }
     }
 
     pub fn ceil(self) -> Self {
-        Point2{
+        Self{
             x: self.x.ceil(),
             y: self.y.ceil(),
         }
     }
 
     pub fn abs(self) -> Self {
-        Point2{
+        Self{
             x: self.x.abs(),
             y: self.y.abs(),
         }
     }
 
     pub fn permute(self, x: usize, y: usize) -> Self {
-        Point2{
+        Self{
             x: self[x],
             y: self[y],
         }
@@ -72,7 +79,7 @@ impl<T: Value> Point2<T> {
 
 impl<T: Value> From<Point3<T>> for Point2<T> {
     fn from(p: Point3<T>) -> Self {
-        Point2{
+        Self{
             x: p.x,
             y: p.y,
         }
@@ -81,7 +88,7 @@ impl<T: Value> From<Point3<T>> for Point2<T> {
 
 impl<T: Value> From<Vector2<T>> for Point2<T> {
     fn from(v: Vector2<T>) -> Self {
-        Point2{
+        Self{
             x: v.x,
             y: v.y,
         }
@@ -116,7 +123,7 @@ impl<T: Value> Add for Point2<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Point2{
+        Self{
             x: self.x + other.x,
             y: self.y + other.y,
         }
@@ -127,7 +134,7 @@ impl<T: Value> Add<Vector2<T>> for Point2<T> {
     type Output = Self;
 
     fn add(self, other: Vector2<T>) -> Self {
-        Point2{
+        Self{
             x: self.x + other.x,
             y: self.y + other.y,
         }
@@ -156,7 +163,7 @@ impl<T: Value> Sub<Vector2<T>> for Point2<T> {
     type Output = Self;
 
     fn sub(self, other: Vector2<T>) -> Self {
-        Point2{
+        Self{
             x: self.x - other.x,
             y: self.y - other.y,
         }
@@ -174,7 +181,7 @@ impl<T: Value> Mul<T> for Point2<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
-        Point2{
+        Self{
             x: self.x * other,
             y: self.y * other,
         }
@@ -207,6 +214,22 @@ mod tests {
 
         assert_eq!(1, p.x);
         assert_eq!(2, p.y);
+    }
+
+    #[test]
+    fn new_zero() {
+        let p: Point2<f64> = Point2::zero();
+
+        assert_eq!(0.0, p.x);
+        assert_eq!(0.0, p.y);
+    }
+
+    #[test]
+    fn new_zero_int() {
+        let p: Point2<i32> = Point2::zero();
+
+        assert_eq!(0, p.x);
+        assert_eq!(0, p.y);
     }
 
     #[test]

@@ -26,7 +26,15 @@ impl<T: Value> Point3<T> {
     pub fn new(x: T, y: T, z: T) -> Self {
         assert!(!has_nans_3(x, y, z));
 
-        Point3{ x: x, y: y, z: z }
+        Self{ x: x, y: y, z: z }
+    }
+
+    pub fn zero() -> Self {
+        Self::new(
+            T::zero(),
+            T::zero(),
+            T::zero(),
+        )
     }
 
     pub fn distance_squared(self, other: Self) -> T {
@@ -44,7 +52,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn min(self, other: Self) -> Self {
-        Point3{
+        Self{
             x: self.x.min(other.x),
             y: self.y.min(other.y),
             z: self.z.min(other.z),
@@ -52,7 +60,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn max(self, other: Self) -> Self {
-        Point3{
+        Self{
             x: self.x.max(other.x),
             y: self.y.max(other.y),
             z: self.z.max(other.z),
@@ -60,7 +68,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn floor(self) -> Self {
-        Point3{
+        Self{
             x: self.x.floor(),
             y: self.y.floor(),
             z: self.z.floor(),
@@ -68,7 +76,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn ceil(self) -> Self {
-        Point3{
+        Self{
             x: self.x.ceil(),
             y: self.y.ceil(),
             z: self.z.ceil(),
@@ -76,7 +84,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn abs(self) -> Self {
-        Point3{
+        Self{
             x: self.x.abs(),
             y: self.y.abs(),
             z: self.z.abs(),
@@ -84,7 +92,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn permute(self, x: usize, y: usize, z: usize) -> Self {
-        Point3{
+        Self{
             x: self[x],
             y: self[y],
             z: self[z],
@@ -94,7 +102,7 @@ impl<T: Value> Point3<T> {
 
 impl<T: Value> From<Vector3<T>> for Point3<T> {
     fn from(v: Vector3<T>) -> Self {
-        Point3{
+        Self{
             x: v.x,
             y: v.y,
             z: v.z,
@@ -132,7 +140,7 @@ impl<T: Value> Add for Point3<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Point3{
+        Self{
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z,
@@ -144,7 +152,7 @@ impl<T: Value> Add<Vector3<T>> for Point3<T> {
     type Output = Self;
 
     fn add(self, other: Vector3<T>) -> Self {
-        Point3{
+        Self{
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z,
@@ -176,7 +184,7 @@ impl<T: Value> Sub<Vector3<T>> for Point3<T> {
     type Output = Self;
 
     fn sub(self, other: Vector3<T>) -> Self {
-        Point3{
+        Self{
             x: self.x - other.x,
             y: self.y - other.y,
             z: self.z - other.z,
@@ -196,7 +204,7 @@ impl<T: Value> Mul<T> for Point3<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
-        Point3{
+        Self{
             x: self.x * other,
             y: self.y * other,
             z: self.z * other,
@@ -233,6 +241,24 @@ mod tests {
         assert_eq!(1, p.x);
         assert_eq!(2, p.y);
         assert_eq!(3, p.z);
+    }
+
+    #[test]
+    fn new_zero() {
+        let p: Point3<f64> = Point3::zero();
+
+        assert_eq!(0.0, p.x);
+        assert_eq!(0.0, p.y);
+        assert_eq!(0.0, p.z);
+    }
+
+    #[test]
+    fn new_zero_int() {
+        let p: Point3<i32> = Point3::zero();
+
+        assert_eq!(0, p.x);
+        assert_eq!(0, p.y);
+        assert_eq!(0, p.z);
     }
 
     #[test]
