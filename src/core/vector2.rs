@@ -1,16 +1,5 @@
-use std::ops::{
-    Add,
-    AddAssign,
-    Div,
-    DivAssign,
-    Index,
-    IndexMut,
-    Mul,
-    MulAssign,
-    Neg,
-    Sub,
-    SubAssign,
-};
+use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Neg, Sub,
+               SubAssign};
 
 use core::utils::has_nans_2;
 use core::value::Value;
@@ -25,18 +14,15 @@ impl<T: Value> Vector2<T> {
     pub fn new(x: T, y: T) -> Self {
         assert!(!has_nans_2(x, y));
 
-        Self{ x: x, y: y }
+        Self { x: x, y: y }
     }
 
     pub fn zero() -> Self {
-        Self::new(
-            T::zero(),
-            T::zero(),
-        )
+        Self::new(T::zero(), T::zero())
     }
 
     pub fn abs(self) -> Self {
-        Self{
+        Self {
             x: self.x.abs(),
             y: self.y.abs(),
         }
@@ -79,21 +65,21 @@ impl<T: Value> Vector2<T> {
     }
 
     pub fn min(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x.min(other.x),
             y: self.y.min(other.y),
         }
     }
 
     pub fn max(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x.max(other.x),
             y: self.y.max(other.y),
         }
     }
 
     pub fn permute(self, x: usize, y: usize) -> Self {
-        Self{
+        Self {
             x: self[x],
             y: self[y],
         }
@@ -128,7 +114,7 @@ impl<T: Value> Add for Vector2<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x + other.x,
             y: self.y + other.y,
         }
@@ -146,7 +132,7 @@ impl<T: Value> Sub for Vector2<T> {
     type Output = Self;
 
     fn sub(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x - other.x,
             y: self.y - other.y,
         }
@@ -164,7 +150,7 @@ impl<T: Value> Mul<T> for Vector2<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
-        Self{
+        Self {
             x: self.x * other,
             y: self.y * other,
         }
@@ -184,7 +170,7 @@ impl<T: Value> Div<T> for Vector2<T> {
     fn div(self, other: T) -> Self {
         let inv = T::one() / other;
 
-        Self{
+        Self {
             x: self.x * inv,
             y: self.y * inv,
         }
@@ -206,7 +192,7 @@ impl<T: Value> Neg for Vector2<T> {
     fn neg(self) -> Self {
         let neg_one = T::one().neg();
 
-        Self{
+        Self {
             x: neg_one * self.x,
             y: neg_one * self.y,
         }

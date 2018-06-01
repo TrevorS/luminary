@@ -1,4 +1,2 @@
 #[derive(Clone, Copy, Debug)]
-pub struct Medium {
-
-}
+pub struct Medium {}

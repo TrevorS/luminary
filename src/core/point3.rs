@@ -1,13 +1,4 @@
-use std::ops::{
-    Index,
-    IndexMut,
-    Add,
-    AddAssign,
-    Sub,
-    SubAssign,
-    Mul,
-    MulAssign,
-};
+use std::ops::{Add, AddAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 
 use num::NumCast;
 
@@ -26,15 +17,11 @@ impl<T: Value> Point3<T> {
     pub fn new(x: T, y: T, z: T) -> Self {
         assert!(!has_nans_3(x, y, z));
 
-        Self{ x: x, y: y, z: z }
+        Self { x: x, y: y, z: z }
     }
 
     pub fn zero() -> Self {
-        Self::new(
-            T::zero(),
-            T::zero(),
-            T::zero(),
-        )
+        Self::new(T::zero(), T::zero(), T::zero())
     }
 
     pub fn distance_squared(self, other: Self) -> T {
@@ -47,12 +34,11 @@ impl<T: Value> Point3<T> {
 
     pub fn lerp(self, other: Self, t: f64) -> Self {
         // What should this return for int based Points?
-        (self * (T::one() - NumCast::from(t).unwrap())) +
-            (other * NumCast::from(t).unwrap())
+        (self * (T::one() - NumCast::from(t).unwrap())) + (other * NumCast::from(t).unwrap())
     }
 
     pub fn min(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x.min(other.x),
             y: self.y.min(other.y),
             z: self.z.min(other.z),
@@ -60,7 +46,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn max(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x.max(other.x),
             y: self.y.max(other.y),
             z: self.z.max(other.z),
@@ -68,7 +54,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn floor(self) -> Self {
-        Self{
+        Self {
             x: self.x.floor(),
             y: self.y.floor(),
             z: self.z.floor(),
@@ -76,7 +62,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn ceil(self) -> Self {
-        Self{
+        Self {
             x: self.x.ceil(),
             y: self.y.ceil(),
             z: self.z.ceil(),
@@ -84,7 +70,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn abs(self) -> Self {
-        Self{
+        Self {
             x: self.x.abs(),
             y: self.y.abs(),
             z: self.z.abs(),
@@ -92,7 +78,7 @@ impl<T: Value> Point3<T> {
     }
 
     pub fn permute(self, x: usize, y: usize, z: usize) -> Self {
-        Self{
+        Self {
             x: self[x],
             y: self[y],
             z: self[z],
@@ -102,7 +88,7 @@ impl<T: Value> Point3<T> {
 
 impl<T: Value> From<Vector3<T>> for Point3<T> {
     fn from(v: Vector3<T>) -> Self {
-        Self{
+        Self {
             x: v.x,
             y: v.y,
             z: v.z,
@@ -140,7 +126,7 @@ impl<T: Value> Add for Point3<T> {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        Self{
+        Self {
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z,
@@ -152,7 +138,7 @@ impl<T: Value> Add<Vector3<T>> for Point3<T> {
     type Output = Self;
 
     fn add(self, other: Vector3<T>) -> Self {
-        Self{
+        Self {
             x: self.x + other.x,
             y: self.y + other.y,
             z: self.z + other.z,
@@ -172,7 +158,7 @@ impl<T: Value> Sub<Self> for Point3<T> {
     type Output = Vector3<T>;
 
     fn sub(self, other: Self) -> Vector3<T> {
-        Vector3{
+        Vector3 {
             x: self.x - other.x,
             y: self.y - other.y,
             z: self.z - other.z,
@@ -184,7 +170,7 @@ impl<T: Value> Sub<Vector3<T>> for Point3<T> {
     type Output = Self;
 
     fn sub(self, other: Vector3<T>) -> Self {
-        Self{
+        Self {
             x: self.x - other.x,
             y: self.y - other.y,
             z: self.z - other.z,
@@ -204,7 +190,7 @@ impl<T: Value> Mul<T> for Point3<T> {
     type Output = Self;
 
     fn mul(self, other: T) -> Self {
-        Self{
+        Self {
             x: self.x * other,
             y: self.y * other,
             z: self.z * other,
@@ -391,7 +377,11 @@ mod tests {
 
     #[test]
     fn from_vector3() {
-        let v3 = Vector3{x: 1.0, y: 2.0, z: 3.0};
+        let v3 = Vector3 {
+            x: 1.0,
+            y: 2.0,
+            z: 3.0,
+        };
         let p3 = Point3::from(v3);
 
         assert_eq!(1.0, p3.x);

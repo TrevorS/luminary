@@ -16,14 +16,20 @@ pub struct Ray {
 
 impl Ray {
     pub fn new(o: Point3f, d: Vector3f, medium: Medium, t_max: f64, time: f64) -> Self {
-        Self{o, d, medium, t_max, time}
+        Self {
+            o,
+            d,
+            medium,
+            t_max,
+            time,
+        }
     }
 
     pub fn zero() -> Self {
         Self::new(
             Point3f::zero(),
             Vector3f::zero(),
-            Medium{},
+            Medium {},
             f64::INFINITY,
             0.0,
         )
