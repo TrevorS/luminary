@@ -15,7 +15,7 @@ impl<T: Value> Point2<T> {
     pub fn new(x: T, y: T) -> Self {
         assert!(!has_nans_2(x, y));
 
-        Self { x: x, y: y }
+        Self { x, y }
     }
 
     pub fn zero() -> Self {
