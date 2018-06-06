@@ -3,6 +3,7 @@ pub mod normal3;
 pub mod point2;
 pub mod point3;
 pub mod ray;
+pub mod ray_differential;
 pub mod utils;
 pub mod value;
 pub mod vector2;
