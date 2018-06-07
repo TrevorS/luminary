@@ -1,7 +1,7 @@
-use num::traits::{FromPrimitive, NumCast, Signed, ToPrimitive};
+use num::traits::{Bounded, FromPrimitive, NumCast, Signed, ToPrimitive};
 
 pub trait Value:
-    Signed + NumCast + ToPrimitive + FromPrimitive + PartialOrd + PartialEq + Copy
+    Bounded + Signed + NumCast + ToPrimitive + FromPrimitive + PartialOrd + PartialEq + Copy
 {
     fn min(self, other: Self) -> Self {
         if self < other {
@@ -40,6 +40,6 @@ pub trait Value:
 
 impl<T> Value for T
 where
-    T: Signed + NumCast + ToPrimitive + FromPrimitive + PartialOrd + PartialEq + Copy,
+    T: Bounded + Signed + NumCast + ToPrimitive + FromPrimitive + PartialOrd + PartialEq + Copy,
 {
 }

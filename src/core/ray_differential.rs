@@ -1,8 +1,8 @@
 use core::Point3f;
 use core::Vector3f;
 
-use core::ray::Ray;
 use core::medium::Medium;
+use core::ray::Ray;
 
 #[derive(Clone, Debug)]
 pub struct RayDifferential {

@@ -1,3 +1,5 @@
+pub mod bounds2;
+pub mod bounds3;
 pub mod medium;
 pub mod normal3;
 pub mod point2;
@@ -10,6 +12,11 @@ pub mod vector2;
 pub mod vector3;
 
 pub type Normal3f = normal3::Normal3<f64>;
+
+pub type Bounds2f = bounds2::Bounds2<f64>;
+pub type Bounds2i = bounds2::Bounds2<i32>;
+pub type Bounds3f = bounds3::Bounds3<f64>;
+pub type Bounds3i = bounds3::Bounds3<i32>;
 
 pub type Point2f = point2::Point2<f64>;
 pub type Point2i = point2::Point2<i32>;
