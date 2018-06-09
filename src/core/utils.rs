@@ -1,9 +1,17 @@
+use core::value::Value;
+
 pub fn has_nans_3<Value: PartialEq>(x: Value, y: Value, z: Value) -> bool {
     x != x || y != y || z != z
 }
 
 pub fn has_nans_2<Value: PartialEq>(x: Value, y: Value) -> bool {
     x != x || y != y
+}
+
+pub fn lerp<T: Value>(t: T, v1: T, v2: T) -> T {
+    let negative_one = T::zero() - T::one();
+
+    (negative_one - t) * v1 + t * v2
 }
 
 #[cfg(test)]

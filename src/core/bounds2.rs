@@ -11,12 +11,12 @@ pub struct Bounds2<T: Value> {
 
 impl<T: Value> Bounds2<T> {
     pub fn new(p1: Point2<T>, p2: Point2<T>) -> Self {
-        let p_min = Point2{
+        let p_min = Point2 {
             x: p1.x.min(p2.x),
             y: p1.y.min(p2.y),
         };
 
-        let p_max = Point2{
+        let p_max = Point2 {
             x: p1.x.max(p2.x),
             y: p1.y.max(p2.y),
         };

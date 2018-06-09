@@ -1,4 +1,4 @@
-use std::ops::{Add, AddAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
+use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, Sub, SubAssign};
 
 use num::NumCast;
 
@@ -203,6 +203,30 @@ impl<T: Value + MulAssign> MulAssign<T> for Point3<T> {
         self.x *= other;
         self.y *= other;
         self.z *= other;
+    }
+}
+
+impl<T: Value> Div<T> for Point3<T> {
+    type Output = Self;
+
+    fn div(self, other: T) -> Self {
+        let inv = T::one() / other;
+
+        Self {
+            x: self.x * inv,
+            y: self.y * inv,
+            z: self.z * inv,
+        }
+    }
+}
+
+impl<T: Value + MulAssign> DivAssign<T> for Point3<T> {
+    fn div_assign(&mut self, other: T) {
+        let inv = T::one() / other;
+
+        self.x *= inv;
+        self.y *= inv;
+        self.z *= inv;
     }
 }
 
