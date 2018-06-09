@@ -1,5 +1,6 @@
 pub mod bounds2;
 pub mod bounds3;
+pub mod matrix44;
 pub mod medium;
 pub mod normal3;
 pub mod point2;
