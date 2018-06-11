@@ -1,3 +1,4 @@
+#[derive(Clone, Copy, Debug)]
 pub struct Matrix44 {
     m: [[f64; 4]; 4],
 }
