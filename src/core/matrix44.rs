@@ -23,10 +23,6 @@ impl Matrix44 {
         }
     }
 
-    pub fn new_from_array(m: [[f64; 4]; 4]) -> Self {
-        Self { m: m }
-    }
-
     #[cfg_attr(rustfmt, rustfmt_skip)]
     pub fn zero() -> Self {
         Self::new(
@@ -169,6 +165,12 @@ impl IndexMut<usize> for Matrix44 {
         assert!(i <= 3);
 
         &mut self.m[i]
+    }
+}
+
+impl From<[[f64; 4]; 4]> for Matrix44 {
+    fn from(m: [[f64; 4]; 4]) -> Self {
+        Self { m }
     }
 }
 

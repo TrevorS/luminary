@@ -13,6 +13,28 @@ impl Transform {
             m_inv: Matrix44::identity(),
         }
     }
+
+    pub fn inverse(self) -> Self {
+        Self {
+            m: self.m_inv,
+            m_inv: self.m,
+        }
+    }
+
+    pub fn transponse(self) -> Self {
+        Self {
+            m: self.m.transpose(),
+            m_inv: self.m_inv.transpose(),
+        }
+    }
+}
+
+impl From<[[f64; 4]; 4]> for Transform {
+    fn from(array: [[f64; 4]; 4]) -> Self {
+        let m = Matrix44::from(array);
+
+        Self::from(m)
+    }
 }
 
 impl From<Matrix44> for Transform {
