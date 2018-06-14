@@ -2,6 +2,8 @@ use std::ops::Index;
 
 use core::point3::Point3;
 use core::utils;
+use core::transform::Transform;
+use core::transformable::Transformable;
 use core::value::Value;
 use core::vector3::Vector3;
 
@@ -190,6 +192,60 @@ impl<T: Value> Bounds3<T> {
         }
 
         (center, radius)
+    }
+}
+
+impl<T: Value> Transformable for Bounds3<T> {
+    fn transform(self, t: Transform) -> Self {
+        let mut result = Bounds3::from(t.transform(Point3 {
+            x: self.p_min.x,
+            y: self.p_min.y,
+            z: self.p_min.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_max.x,
+            y: self.p_min.y,
+            z: self.p_min.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_min.x,
+            y: self.p_max.y,
+            z: self.p_min.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_min.x,
+            y: self.p_min.y,
+            z: self.p_max.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_min.x,
+            y: self.p_max.y,
+            z: self.p_max.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_max.x,
+            y: self.p_max.y,
+            z: self.p_min.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_max.x,
+            y: self.p_min.y,
+            z: self.p_max.z,
+        }));
+
+        result = result.union(t.transform(Point3 {
+            x: self.p_max.x,
+            y: self.p_max.y,
+            z: self.p_max.z,
+        }));
+
+        result
     }
 }
 

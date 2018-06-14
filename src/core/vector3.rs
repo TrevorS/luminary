@@ -6,6 +6,8 @@ use num::NumCast;
 use core::normal3::Normal3;
 use core::utils::has_nans_3;
 use core::value::Value;
+use core::transform::Transform;
+use core::transformable::Transformable;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Vector3<T: Value> {
@@ -135,6 +137,24 @@ impl<T: Value> Vector3<T> {
         let v3 = self.cross(v2);
 
         (v2, v3)
+    }
+}
+
+impl<T: Value> Transformable for Vector3<T> {
+    fn transform(self, t: Transform) -> Self {
+        let x = T::from(t.m[0][0]).unwrap() * self.x +
+                T::from(t.m[0][1]).unwrap() * self.y +
+                T::from(t.m[0][2]).unwrap() * self.z;
+
+        let y = T::from(t.m[1][0]).unwrap() * self.x +
+                T::from(t.m[1][1]).unwrap() * self.y +
+                T::from(t.m[1][2]).unwrap() * self.z;
+
+        let z = T::from(t.m[2][0]).unwrap() * self.x +
+                T::from(t.m[2][1]).unwrap() * self.y +
+                T::from(t.m[2][2]).unwrap() * self.z;
+
+        Self { x, y, z }
     }
 }
 

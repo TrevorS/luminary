@@ -4,6 +4,8 @@ use std::ops::{Add, AddAssign, Div, DivAssign, Index, IndexMut, Mul, MulAssign, 
 use core::utils::has_nans_3;
 use core::value::Value;
 use core::vector3::Vector3;
+use core::transform::Transform;
+use core::transformable::Transformable;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Normal3<T: Value> {
@@ -107,6 +109,24 @@ impl<T: Value> Normal3<T> {
         } else {
             self
         }
+    }
+}
+
+impl<T: Value> Transformable for Normal3<T> {
+    fn transform(self, t: Transform) -> Self {
+        let x = T::from(t.m_inv[0][0]).unwrap() * self.x +
+                T::from(t.m_inv[1][0]).unwrap() * self.y +
+                T::from(t.m_inv[2][0]).unwrap() * self.z;
+
+        let y = T::from(t.m_inv[0][1]).unwrap() * self.x +
+                T::from(t.m_inv[1][1]).unwrap() * self.y +
+                T::from(t.m_inv[2][1]).unwrap() * self.z;
+
+        let z = T::from(t.m_inv[0][2]).unwrap() * self.x +
+                T::from(t.m_inv[1][2]).unwrap() * self.y +
+                T::from(t.m_inv[2][2]).unwrap() * self.z;
+
+        Self { x, y, z }
     }
 }
 

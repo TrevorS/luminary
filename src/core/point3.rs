@@ -4,6 +4,8 @@ use num::NumCast;
 
 use core::utils::has_nans_3;
 use core::value::Value;
+use core::transform::Transform;
+use core::transformable::Transformable;
 use core::vector3::Vector3;
 
 #[derive(Clone, Copy, Debug)]
@@ -83,6 +85,37 @@ impl<T: Value> Point3<T> {
             y: self[y],
             z: self[z],
         }
+    }
+}
+
+#[cfg_attr(rustfmt, rustfmt_skip)]
+impl<T: Value> Transformable for Point3<T> {
+    fn transform(self, t: Transform) -> Self {
+        let x = T::from(t.m[0][0]).unwrap() * self.x +
+                T::from(t.m[0][1]).unwrap() * self.y +
+                T::from(t.m[0][2]).unwrap() * self.z +
+                T::from(t.m[0][3]).unwrap();
+
+        let y = T::from(t.m[1][0]).unwrap() * self.x +
+                T::from(t.m[1][1]).unwrap() * self.y +
+                T::from(t.m[1][2]).unwrap() * self.z +
+                T::from(t.m[1][3]).unwrap();
+
+        let z = T::from(t.m[2][0]).unwrap() * self.x +
+                T::from(t.m[2][1]).unwrap() * self.y +
+                T::from(t.m[2][2]).unwrap() * self.z +
+                T::from(t.m[2][3]).unwrap();
+
+        let w = T::from(t.m[3][0]).unwrap() * self.x +
+                T::from(t.m[3][1]).unwrap() * self.y +
+                T::from(t.m[3][2]).unwrap() * self.z +
+                T::from(t.m[3][3]).unwrap();
+
+        if w == T::one() {
+            return Self { x, y, z }
+        }
+
+        Self { x, y, z } / w
     }
 }
 
